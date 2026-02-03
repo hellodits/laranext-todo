@@ -115,7 +115,7 @@ Middleware membantu menjaga keamanan aplikasi dan memisahkan logic authenticatio
 ## Status Implementasi
 
 ✅ **Backend Laravel**: Running di `http://localhost:8000`
-- SQLite database (tidak perlu setup MySQL)
+- MySQL database dengan relasi yang proper
 - Laravel Sanctum authentication
 - CORS dikonfigurasi untuk frontend
 - API endpoints lengkap (register, login, CRUD todos)
@@ -143,8 +143,7 @@ Middleware membantu menjaga keamanan aplikasi dan memisahkan logic authenticatio
 │   │       ├── User.php
 │   │       └── Todo.php
 │   ├── database/
-│   │   ├── migrations/
-│   │   └── database.sqlite
+│   │   └── migrations/
 │   ├── routes/
 │   │   └── api.php
 │   └── config/
@@ -179,7 +178,7 @@ Middleware membantu menjaga keamanan aplikasi dan memisahkan logic authenticatio
 
 ### Backend
 - Laravel 10
-- SQLite Database
+- MySQL Database
 - Laravel Sanctum (Authentication)
 
 ### Frontend
@@ -203,6 +202,7 @@ Lihat dokumentasi lengkap di bawah untuk instalasi dan konfigurasi.
 - PHP >= 8.1
 - Composer
 - Node.js >= 18
+- MySQL
 - Git
 
 ### Backend Setup (Laravel)
@@ -227,12 +227,27 @@ Lihat dokumentasi lengkap di bawah untuk instalasi dan konfigurasi.
    php artisan key:generate
    ```
 
-5. **Jalankan migrasi:**
+5. **Buat database MySQL:**
+   ```sql
+   CREATE DATABASE todo_app_project;
+   ```
+
+6. **Konfigurasi database di file `.env`:**
+   ```
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=todo_app_project
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+
+7. **Jalankan migrasi:**
    ```cmd
    php artisan migrate
    ```
 
-6. **Jalankan server Laravel:**
+8. **Jalankan server Laravel:**
    ```cmd
    php artisan serve
    ```
@@ -410,10 +425,14 @@ Loading states yang informatif, error handling yang user-friendly, responsive de
 ## Troubleshooting
 
 **Database Connection Error**
-Pastikan path database SQLite sudah benar di file `.env`:
+Pastikan MySQL sudah running dan database `todo_app_project` sudah dibuat. Cek kredensial di file `.env`:
 ```
-DB_CONNECTION=sqlite
-DB_DATABASE=/absolute/path/to/database/database.sqlite
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=todo_app_project
+DB_USERNAME=root
+DB_PASSWORD=
 ```
 
 **401 Unauthorized**
