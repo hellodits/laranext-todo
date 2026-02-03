@@ -1,8 +1,6 @@
 # Fullstack Todo App - Technical Test
 
-> **🚀 New here?** Start with [START_HERE.md](START_HERE.md) for quick navigation!
-
-Aplikasi Todo List fullstack menggunakan Laravel (Backend) dan Next.js (Frontend) dengan autentikasi menggunakan Laravel Sanctum.
+Aplikasi Todo List fullstack menggunakan Laravel (Backend) dan Next.js (Frontend) dengan autentikasi Laravel Sanctum.
 
 ---
 
@@ -10,86 +8,93 @@ Aplikasi Todo List fullstack menggunakan Laravel (Backend) dan Next.js (Frontend
 
 ### 1. Jelaskan apa itu REST API?
 
-REST API (Representational State Transfer Application Programming Interface) adalah arsitektur komunikasi antara client dan server yang menggunakan protokol HTTP. REST API mengikuti prinsip-prinsip berikut:
+REST API (Representational State Transfer) adalah cara komunikasi antara aplikasi frontend dan backend menggunakan protokol HTTP. REST mengikuti prinsip-prinsip sederhana yang membuatnya mudah dipahami dan digunakan.
 
-- **Stateless**: Setiap request dari client ke server harus mengandung semua informasi yang diperlukan untuk memahami request tersebut. Server tidak menyimpan state dari client.
-- **Client-Server Architecture**: Pemisahan antara client (frontend) dan server (backend) yang memungkinkan keduanya berkembang secara independen.
-- **Uniform Interface**: Menggunakan HTTP methods standar (GET, POST, PUT, DELETE) untuk operasi CRUD.
-- **Resource-Based**: Setiap resource (data) diidentifikasi melalui URI/URL yang unik.
+**Prinsip utama REST:**
+- **Stateless**: Setiap request berdiri sendiri, server tidak menyimpan informasi session
+- **Client-Server**: Frontend dan backend terpisah, bisa dikembangkan independen
+- **Uniform Interface**: Menggunakan HTTP methods standar (GET, POST, PUT, DELETE)
+- **Resource-Based**: Setiap data diidentifikasi melalui URL unik
 
-Contoh REST API:
-- `GET /api/todos` - Mengambil semua data todos
-- `POST /api/todos` - Membuat todo baru
-- `PUT /api/todos/1` - Mengupdate todo dengan id 1
-- `DELETE /api/todos/1` - Menghapus todo dengan id 1
+**Contoh penggunaan:**
+- `GET /api/todos` - Ambil semua data todos
+- `POST /api/todos` - Buat todo baru
+- `PUT /api/todos/1` - Update todo dengan id 1
+- `DELETE /api/todos/1` - Hapus todo dengan id 1
+
+REST API memungkinkan berbagai aplikasi (web, mobile, desktop) mengakses data yang sama melalui interface yang konsisten.
 
 ### 2. Apa itu CORS dan bagaimana cara menanganinya di backend?
 
-CORS (Cross-Origin Resource Sharing) adalah mekanisme keamanan browser yang membatasi request HTTP yang dibuat dari satu domain ke domain lain. Ini adalah fitur keamanan untuk mencegah serangan Cross-Site Request Forgery (CSRF).
+CORS (Cross-Origin Resource Sharing) adalah fitur keamanan browser yang mengontrol akses antar domain. Browser secara otomatis memblokir request dari satu domain ke domain lain untuk mencegah serangan berbahaya.
 
-**Masalah CORS terjadi ketika:**
-- Frontend berjalan di `http://localhost:3000` (Next.js)
-- Backend berjalan di `http://localhost:8000` (Laravel)
-- Browser memblokir request karena berbeda origin (port berbeda)
+**Kapan CORS menjadi masalah:**
+- Frontend di `http://localhost:3000` (Next.js)
+- Backend di `http://localhost:8000` (Laravel)
+- Browser menolak request karena port berbeda
 
-**Cara menangani CORS di Laravel:**
+**Solusi di Laravel:**
 
-1. **Menggunakan Laravel CORS Package** (sudah built-in di Laravel 8+):
-   - Konfigurasi file `config/cors.php`
-   - Set `allowed_origins` untuk mengizinkan domain frontend
-   - Set `allowed_methods` untuk HTTP methods yang diizinkan
-   - Set `allowed_headers` untuk headers yang diizinkan
+Laravel menyediakan konfigurasi CORS built-in di file `config/cors.php`:
 
-2. **Contoh konfigurasi:**
-   ```php
-   'paths' => ['api/*', 'sanctum/csrf-cookie'],
-   'allowed_origins' => ['http://localhost:3000'],
-   'allowed_methods' => ['*'],
-   'allowed_headers' => ['*'],
-   'supports_credentials' => true,
-   ```
+```php
+'paths' => ['api/*', 'sanctum/csrf-cookie'],
+'allowed_origins' => ['http://localhost:3000'],
+'allowed_methods' => ['*'],
+'allowed_headers' => ['*'],
+'supports_credentials' => false,
+```
+
+Konfigurasi ini memberitahu Laravel untuk menerima request dari frontend dan menambahkan header CORS yang diperlukan ke response.
 
 ### 3. Jelaskan perbedaan antara SQL dan NoSQL database!
 
-| Aspek | SQL (Relational) | NoSQL (Non-Relational) |
-|-------|------------------|------------------------|
-| **Struktur Data** | Terstruktur dalam tabel dengan baris dan kolom | Fleksibel: document, key-value, graph, column-family |
-| **Schema** | Schema tetap (fixed schema), harus didefinisikan sebelumnya | Schema dinamis (dynamic schema), fleksibel |
-| **Relasi** | Mendukung relasi antar tabel dengan Foreign Keys | Relasi terbatas atau tidak ada, data sering di-denormalisasi |
-| **Skalabilitas** | Vertical scaling (upgrade hardware) | Horizontal scaling (tambah server) |
-| **Query Language** | SQL (Structured Query Language) | Berbeda-beda tergantung database (MongoDB: JSON-like queries) |
-| **ACID Compliance** | Mendukung penuh ACID (Atomicity, Consistency, Isolation, Durability) | Beberapa mendukung, beberapa prioritas pada performa |
-| **Contoh** | MySQL, PostgreSQL, SQL Server | MongoDB, Redis, Cassandra, DynamoDB |
-| **Use Case** | Aplikasi dengan relasi kompleks, transaksi finansial | Big data, real-time analytics, aplikasi dengan data tidak terstruktur |
+**SQL Database (Relational)**
+- Struktur data terorganisir dalam tabel dengan baris dan kolom
+- Schema tetap - struktur harus didefinisikan sebelumnya
+- Mendukung relasi kompleks antar tabel dengan Foreign Keys
+- Menggunakan bahasa SQL untuk query
+- Mendukung ACID transactions (Atomicity, Consistency, Isolation, Durability)
+- Scaling vertikal (upgrade hardware)
+- Contoh: MySQL, PostgreSQL, SQL Server
+
+**NoSQL Database (Non-Relational)**
+- Struktur data fleksibel: document, key-value, graph, atau column-family
+- Schema dinamis - struktur bisa berubah kapan saja
+- Relasi terbatas, data sering di-denormalisasi
+- Query language berbeda-beda tergantung database
+- Beberapa mendukung ACID, beberapa prioritas performa
+- Scaling horizontal (tambah server)
+- Contoh: MongoDB, Redis, Cassandra, DynamoDB
 
 **Kapan menggunakan SQL:**
-- Data terstruktur dengan relasi yang jelas
+- Data terstruktur dengan relasi jelas
 - Membutuhkan transaksi ACID yang ketat
 - Query kompleks dengan JOIN
 
 **Kapan menggunakan NoSQL:**
-- Data tidak terstruktur atau semi-terstruktur
+- Data tidak terstruktur atau sering berubah
 - Membutuhkan skalabilitas horizontal
-- Performa tinggi untuk read/write operations
-- Struktur data yang sering berubah
+- Performa tinggi untuk operasi read/write
 
 ### 4. Apa yang Anda ketahui tentang middleware?
 
-Middleware adalah layer perantara yang berada di antara request dan response dalam aplikasi web. Middleware berfungsi sebagai "filter" atau "gatekeeper" yang memproses HTTP request sebelum mencapai controller atau setelah controller menghasilkan response.
+Middleware adalah layer perantara yang memproses HTTP request sebelum mencapai controller atau setelah controller menghasilkan response. Bayangkan middleware sebagai "security checkpoint" yang memeriksa setiap request yang masuk.
 
-**Fungsi Middleware:**
+**Fungsi utama middleware:**
+- **Authentication & Authorization**: Cek apakah user sudah login dan punya akses
+- **Logging**: Catat setiap request untuk monitoring
+- **CORS Handling**: Tambahkan header CORS untuk cross-origin requests
+- **Rate Limiting**: Batasi jumlah request dari satu IP
+- **Input Validation**: Validasi data sebelum masuk ke controller
 
-1. **Authentication & Authorization**: Memverifikasi apakah user sudah login dan memiliki hak akses
-2. **Logging**: Mencatat setiap request yang masuk
-3. **CORS Handling**: Menambahkan headers CORS
-4. **Rate Limiting**: Membatasi jumlah request dari satu IP
-5. **Input Validation**: Memvalidasi data sebelum masuk ke controller
-6. **Response Modification**: Mengubah response sebelum dikirim ke client
+**Cara kerja middleware:**
+```
+Request → Middleware 1 → Middleware 2 → Controller → Middleware 2 → Middleware 1 → Response
+```
 
-**Contoh Middleware di Laravel:**
-
+**Contoh middleware di Laravel:**
 ```php
-// Middleware Authentication
 public function handle($request, Closure $next)
 {
     if (!Auth::check()) {
@@ -100,42 +105,28 @@ public function handle($request, Closure $next)
 }
 ```
 
-**Cara kerja Middleware:**
-```
-Request → Middleware 1 → Middleware 2 → Controller → Middleware 2 → Middleware 1 → Response
-```
-
-**Jenis Middleware di Laravel:**
-- **Global Middleware**: Dijalankan untuk setiap request
-- **Route Middleware**: Dijalankan untuk route tertentu
+**Jenis middleware di Laravel:**
+- **Global Middleware**: Jalan untuk semua request
+- **Route Middleware**: Jalan untuk route tertentu saja
 - **Middleware Groups**: Kumpulan middleware (contoh: 'web', 'api')
 
-**Contoh penggunaan di Laravel:**
-```php
-// Di routes/api.php
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/todos', [TodoController::class, 'index']);
-    Route::post('/todos', [TodoController::class, 'store']);
-});
-```
-
-Middleware sangat penting untuk menjaga keamanan, maintainability, dan separation of concerns dalam aplikasi.
+Middleware membantu menjaga keamanan aplikasi dan memisahkan logic authentication dari business logic di controller.
 
 ## Status Implementasi
 
-✅ **Backend Laravel**: Sudah running di `http://localhost:8000`
+✅ **Backend Laravel**: Running di `http://localhost:8000`
 - SQLite database (tidak perlu setup MySQL)
 - Laravel Sanctum authentication
 - CORS dikonfigurasi untuk frontend
 - API endpoints lengkap (register, login, CRUD todos)
 
-✅ **Frontend Next.js**: Sudah running di `http://localhost:3000`
+✅ **Frontend Next.js**: Running di `http://localhost:3000`
 - Dark theme dengan Tailwind CSS
 - Authentication flow lengkap
 - CRUD operations untuk todos
 - Axios dikonfigurasi untuk Laravel backend
 
-✅ **Integrasi**: Frontend sudah dikonfigurasi untuk menggunakan Laravel backend
+✅ **Integrasi**: Frontend dan Laravel backend terintegrasi penuh
 
 ---
 
@@ -187,12 +178,13 @@ Middleware sangat penting untuk menjaga keamanan, maintainability, dan separatio
 ## Tech Stack
 
 ### Backend
-- Laravel (Latest)
-- MySQL
+- Laravel 10
+- SQLite Database
 - Laravel Sanctum (Authentication)
 
 ### Frontend
-- Next.js (App Router)
+- Next.js 14 (App Router)
+- TypeScript
 - Tailwind CSS
 - Axios
 
@@ -235,7 +227,7 @@ Lihat dokumentasi lengkap di bawah untuk instalasi dan konfigurasi.
    php artisan key:generate
    ```
 
-5. **Jalankan migrasi (SQLite sudah dikonfigurasi):**
+5. **Jalankan migrasi:**
    ```cmd
    php artisan migrate
    ```
@@ -283,21 +275,17 @@ Lihat dokumentasi lengkap di bawah untuk instalasi dan konfigurasi.
 
 ## Fitur Keamanan
 
-1. **Authentication dengan Laravel Sanctum:**
-   - Token-based authentication
-   - Setiap request protected route harus menyertakan Bearer token
+**Authentication dengan Laravel Sanctum:**
+Token-based authentication yang aman dan mudah digunakan. Setiap request ke protected route harus menyertakan Bearer token.
 
-2. **Authorization:**
-   - User hanya bisa melihat, edit, dan hapus todos miliknya sendiri
-   - Validasi ownership di setiap endpoint
+**Authorization:**
+User hanya bisa melihat, edit, dan hapus todos miliknya sendiri. Sistem validasi ownership di setiap endpoint memastikan data privacy.
 
-3. **CORS Configuration:**
-   - Backend dikonfigurasi untuk menerima request dari `http://localhost:3000`
-   - Credentials support enabled
+**CORS Configuration:**
+Backend dikonfigurasi khusus untuk menerima request dari `http://localhost:3000` dengan header yang tepat.
 
-4. **Input Validation:**
-   - Semua input divalidasi di backend
-   - Error handling yang proper
+**Input Validation:**
+Semua input divalidasi di backend dengan Laravel validation rules. Error handling yang jelas memberikan feedback yang berguna.
 
 ---
 
@@ -405,51 +393,34 @@ Authorization: Bearer {your_token_here}
 
 ## Best Practices yang Diterapkan
 
-1. **Separation of Concerns:**
-   - Controller hanya handle HTTP logic
-   - Model handle database logic
-   - Middleware handle authentication
+**Separation of Concerns:**
+Controller fokus pada HTTP logic, Model handle database operations, Middleware menangani authentication. Setiap komponen punya tanggung jawab yang jelas.
 
-2. **Security:**
-   - Password hashing dengan bcrypt
-   - Token-based authentication
-   - CORS protection
-   - Input validation
-   - Authorization checks
+**Security First:**
+Password di-hash dengan bcrypt, token-based authentication, CORS protection, input validation ketat, dan authorization checks di setiap endpoint.
 
-3. **Code Organization:**
-   - Monorepo structure
-   - Clear folder structure
-   - Reusable Axios instance
-   - TypeScript interfaces
+**Code Organization:**
+Struktur monorepo yang rapi, folder structure yang jelas, Axios instance yang reusable, dan TypeScript interfaces untuk type safety.
 
-4. **User Experience:**
-   - Loading states
-   - Error handling
-   - Responsive design
-   - Dark theme
-   - Intuitive UI
+**User Experience:**
+Loading states yang informatif, error handling yang user-friendly, responsive design yang smooth, dark theme yang nyaman, dan UI yang intuitif.
 
 ---
 
 ## Troubleshooting
 
-### CORS Error
-Pastikan `config/cors.php` di Laravel sudah dikonfigurasi dengan benar:
-```php
-'allowed_origins' => ['http://localhost:3000'],
-'supports_credentials' => true,
+**Database Connection Error**
+Pastikan path database SQLite sudah benar di file `.env`:
+```
+DB_CONNECTION=sqlite
+DB_DATABASE=/absolute/path/to/database/database.sqlite
 ```
 
-### 401 Unauthorized
-- Pastikan token disimpan di localStorage
-- Pastikan token dikirim di header Authorization
-- Pastikan user sudah login
+**401 Unauthorized**
+Cek apakah token tersimpan di localStorage, token dikirim di header Authorization, dan user sudah login dengan benar.
 
-### Database Connection Error
-- Pastikan MySQL sudah running
-- Pastikan database `todo_app` sudah dibuat
-- Pastikan kredensial di `.env` sudah benar
+**CORS Error**
+Verifikasi konfigurasi `config/cors.php` di Laravel sudah sesuai dengan domain frontend yang digunakan.
 
 ---
 
